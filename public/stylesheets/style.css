@@ -152,7 +152,7 @@ main {
   margin-bottom: 0.75rem;
   color: #8f9ba8;
   text-align: left;
-  word-break: break-word;
+  overflow-wrap: break-word;
   font-size: 0.9rem;
   margin: 0 0 1rem;
   font-weight: 300;
