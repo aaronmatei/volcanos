@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
+    />
+  </head>
+  <body>
+    <main>
+      <div class="wrapper flex">
+        <div class="back">
+          <a href="/volcanos" class="btn text-left">Back to Volcanos</a>
+        </div>
+
+        <p class="sub-title">All volcanoes</p>
+        <div class="info"></div>
+        <a href="javascript:void(0)" class="btn" id="edit">Edit Info</a>
+        <form action="/volcano" method="post" class="form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              id="name"
+              placeholder="Enter Volcano name"
+              type="text"
+              required
+              class="elem"
+              name="name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input
+              id="location"
+              placeholder="Enter Volcano location"
+              type="text"
+              required
+              class="elem"
+              name="location"
+            />
+          </div>
+          <div class="form-group">
+            <label for="history">History</label>
+            <textarea
+              rows="3"
+              placeholder="Enter some history"
+              required
+              class="elem"
+              name="history"
+              id="history"
+            ></textarea>
+          </div>
+
+          <div class="form-group radio">
+            <input type="checkbox" id="active" name="active" class="elem" />
+            <label for="active">Active</label>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="submit">Update Volcano</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      // retrieve a specific volcano
+      (function () {
+        const xhr = new XMLHttpRequest();
+        let tit = document.querySelector('.sub-title');
+        let info = document.querySelector('.info');
+
+        let obj = {};
+
+        xhr.open(
+          'GET',
+          `http://localhost:3000/api/volcanos/${'<%-id%>'}`,
+          true
+        );
+
+        xhr.onload = function () {
+          if (this.status === 200) {
+            obj = JSON.parse(this.responseText);
+            let newObj = obj.data;
+            tit.innerText = newObj.name;
+            createInfo(newObj, info);
+            updateForm(newObj);
+          } else {
+            console.log('No Data');
+          }
+        };
+
+        xhr.send();
+      })();
+
+      // update the volano div
+      function createInfo(volcano, info) {
+        let infoCon = document.createElement('div');
+        infoCon.innerHTML = `
+                <p><strong>Location: </strong> ${volcano.location}</p>
+                <p>
+                  <strong>History: </strong> ${volcano.history}
+                </p>
+                <p><strong>Active: </strong> ${
+                  volcano.active ? 'True' : 'False'
+                }</p>
+              </a>
+                `;
+
+        info.append(infoCon);
+      }
+
+      // show / hide form
+      (function () {
+        let newForm = document.querySelector('#edit');
+        let showForm = document.querySelector('.form');
+
+        newForm.addEventListener('click', function (e) {
+          if (showForm.classList.contains('show')) {
+            showForm.classList.remove('show');
+          } else {
+            showForm.classList.add('show');
+          }
+        });
+      })();
+
+      // fill form data
+      function updateForm(data) {
+        let form = document.querySelector('.form');
+        let inputs = form.querySelectorAll('.elem');
+
+        inputs.forEach((input) => {
+          if (input.name === 'name') {
+            input.value = data.name;
+          }
+
+          if (input.name === 'location') {
+            input.value = data.location;
+          }
+
+          if (input.name === 'history') {
+            input.value = data.history;
+          }
+
+          if (input.name === 'active') {
+            if (data.active === '1') {
+              input.setAttribute('checked', 'checked');
+            } else {
+              if (input.hasAttribute('checked')) {
+                input.removeAttribute('checked');
+              }
+            }
+          }
+        });
+      }
+
+      // handle edit
+      (function () {
+        let editForm = document.querySelector('.form');
+        let inputs = editForm.querySelectorAll('.elem');
+        let data = {};
+
+        editForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          inputs.forEach((input) => {
+            if (input.name === 'name') {
+              data.name = input.value;
+            }
+
+            if (input.name === 'location') {
+              data.location = input.value;
+            }
+
+            if (input.name === 'history') {
+              data.history = input.value;
+            }
+
+            if (input.name === 'active') {
+              data.active = input.checked ? '1' : '0';
+            }
+          });
+
+          updateInfo(data);
+        });
+      })();
+
+      // ajax put request
+      function updateInfo(data) {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open(
+          'PUT',
+          `http://localhost:3000/api/volcanos/${'<%-id%>'}`,
+          true
+        );
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onload = function () {
+          if (this.status === 200) {
+            window.location.reload();
+          } else {
+            console.log('Error Updating');
+          }
+        };
+        xhr.send(JSON.stringify(data));
+      }
+    </script>
+  </body>
+</html>

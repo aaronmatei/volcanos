@@ -1,8 +1,283 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  color: #f2f2f2;
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+main {
+  min-height: 100vh;
+  width: 100%;
+  background: black;
+  color: #f2f2f2;
+}
+
+.wrapper {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  text-transform: uppercase;
+  font-size: 54px;
+  letter-spacing: 3px;
+  line-height: 1.5;
+  font-weight: 400;
+  text-align: center;
+}
+
+.sub-title {
+  text-transform: uppercase;
+  font-size: 22px;
+  letter-spacing: 3px;
+  line-height: 1.273;
+  font-weight: 400;
+  margin-bottom: 35px;
+  margin-top: 90px;
+  text-align: center;
+}
+
+.description {
+  color: #8f9ba8;
+  margin-bottom: 24px;
+  max-width: 728px;
+  width: 100%;
+  letter-spacing: 0.1px;
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 400;
+  text-align: center;
+}
+
+.btn {
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 3px;
+  line-height: 1.429;
+  font-weight: 400;
+  outline: none;
+  background-image: linear-gradient(120deg, #fc0, #fc0);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 0;
+  border-bottom: 2px solid #fc0;
+  text-decoration: none;
+  transition: background-size 0.125s ease-in;
+  color: #f2f2f2;
+  text-align: center;
+}
+
+.btn:hover {
+  outline-width: 0;
+  background-size: 100% 100%;
+  color: #000;
+}
+
+.grid {
+  max-width: 28.125rem;
+  margin: auto;
+  padding: 1.5rem;
+}
+
+@media (min-width: 769px) {
+  .grid {
+    max-width: 56.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    max-width: 70.625rem;
+  }
+}
+
+.volcanoes {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+  justify-content: space-between;
+}
+
+.volcano {
+  margin-bottom: 0.75rem;
+  padding-bottom: 3.125rem;
+  background-color: #212024;
+  transition: all 0.1s ease-in;
+  border-radius: 0.25rem;
+  width: 32%;
+  position: relative;
+}
+
+.volcano .delete {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.volcano a {
+  text-decoration: none;
+  display: block;
+  padding: 1.25rem;
+}
+
+.volcano:hover {
+  background-color: #29282b;
+  cursor: pointer;
+}
+
+.volcano p,
+.info p {
+  margin-bottom: 0.75rem;
+  color: #8f9ba8;
+  text-align: left;
+  word-break: break-word;
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0.0125rem;
+}
+
+.info > div {
+  max-width: 60%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.back {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.volcano strong,
+.info strong {
+  font-size: 1.125rem;
+  color: #f2f2f2;
+  font-weight: 700;
+  line-height: 1;
+  text-align: left;
+  max-width: 80%;
+  letter-spacing: 0.0125rem;
+}
+
+.delete {
+  padding: 0.75rem 0;
+  color: #e16589;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  background: #1a1625;
+  border-radius: 6px;
+  transition: all 0.2s ease-in;
+}
+
+.delete:hover {
+  background: #f2f2f2;
+  color: #1a1625;
+}
+
+.form {
+  min-width: 30%;
+  display: none;
+}
+
+.form.show {
+  display: block;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.7em;
+  margin-top: 0.7em;
+  font-size: 1.125rem;
+  color: #f2f2f2;
+  font-weight: 700;
+  line-height: 1;
+  text-align: left;
+  max-width: 80%;
+  letter-spacing: 0.0125rem;
+}
+
+.form-group input {
+  outline: none;
+  width: 100%;
+  height: 36px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: normal;
+  color: #f2f2f2;
+  background-color: #262626;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.04);
+}
+
+.form-group textarea {
+  outline: none;
+  width: 100%;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: normal;
+  color: #f2f2f2;
+  background-color: #262626;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.04);
+}
+
+.form-group.radio {
+  flex-direction: row;
+}
+
+.form-group.radio input {
+  width: auto;
+}
+
+.form-group.radio label {
+  margin-left: 10px;
+}
+
+.form-group .submit {
+  min-height: 50px;
+  border: none;
+  background: #fc0;
+  font-weight: bold;
+  color: #1a1625;
+  cursor: pointer;
+}
+
+.form-group .submit:hover {
+  background: rgb(230, 184, 0);
 }

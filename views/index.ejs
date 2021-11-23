@@ -2,10 +2,29 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
+    />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <main>
+      <div class="wrapper flex">
+        <h2 class="title">Volcanoes and Current Activity</h2>
+        <p class="sub-title">THE HOT ZONE: ANTHRAX</p>
+
+        <div class="description">
+          There are 161 potentially active volcanoes in the Country. The mission
+          of the USGS Volcano Hazards Program is to enhance public safety and
+          minimize social and economic disruption from volcanic unrest and
+          eruption. We accomplish this by delivering effective forecasts,
+          warnings, and information about volcano hazards based on scientific
+          understanding of volcanic processes.
+        </div>
+
+        <a href="/volcanos" class="btn">See Volcanoes</a>
+      </div>
+    </main>
   </body>
 </html>

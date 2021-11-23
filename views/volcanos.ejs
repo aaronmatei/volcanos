@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
+    />
+  </head>
+  <body>
+    <main>
+      <div class="wrapper flex">
+        <div class="back">
+          <a href="/" class="btn text-left">Back to Home</a>
+        </div>
+        <p class="sub-title">All volcanoes</p>
+        <a href="javascript:void(0)" class="btn" id="new">Add a Volcano</a>
+
+        <form action="/volcanos" method="POST" class="form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              id="name"
+              placeholder="Enter Volcano name"
+              type="text"
+              required
+              class="elem"
+              name="name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input
+              id="location"
+              placeholder="Enter Volcano location"
+              type="text"
+              required
+              class="elem"
+              name="location"
+            />
+          </div>
+          <div class="form-group">
+            <label for="history">History</label>
+            <textarea
+              rows="3"
+              placeholder="Enter some history"
+              required
+              class="elem"
+              name="history"
+              id="history"
+            ></textarea>
+          </div>
+
+          <div class="form-group radio">
+            <input
+              type="checkbox"
+              id="active"
+              name="active"
+              value="1"
+              class="elem"
+            />
+            <label for="active">Active</label>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="submit">Create</button>
+          </div>
+        </form>
+
+        <div class="grid">
+          <div class="volcanoes"></div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // fetch and get all volcanos
+      (function () {
+        const xhr = new XMLHttpRequest();
+        let volDiv = document.querySelector('.volcanoes');
+
+        let obj = {};
+
+        xhr.open('GET', 'http://localhost:3000/api/volcanos', true);
+
+        xhr.onload = function () {
+          if (this.status === 200) {
+            obj = JSON.parse(this.responseText);
+            for (key in obj.data) {
+              createVol(obj.data[key], volDiv);
+            }
+          } else {
+            console.log('No Data');
+          }
+        };
+        xhr.send();
+      })();
+
+      // create a volcano div
+      function createVol(volcano, volDiv) {
+        let volCon = document.createElement('div');
+        volCon.classList.add('volcano');
+        volCon.innerHTML = `
+                <a href="/volcano/${volcano.id}">
+                <p><strong>Name: </strong> ${volcano.name}</p>
+                <p><strong>Location: </strong> ${volcano.location}</p>
+                <p>
+                  <strong>History: </strong> ${volcano.history}
+                </p>
+                <p><strong>Active: </strong> ${
+                  volcano.active ? 'True' : 'False'
+                }</p>
+              </a>
+              <div class="delete" data-id="${volcano.id}">
+                  <i class="bi bi-trash"></i>
+                </div>
+                `;
+
+        volDiv.append(volCon);
+      }
+
+      // Show and close create new form
+      (function () {
+        let newForm = document.querySelector('#new');
+        let showForm = document.querySelector('.form');
+
+        newForm.addEventListener('click', function (e) {
+          if (showForm.classList.contains('show')) {
+            showForm.classList.remove('show');
+          } else {
+            showForm.classList.add('show');
+          }
+        });
+      })();
+
+      // add a new volcano
+      (function () {
+        let form = document.querySelector('.form');
+
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const xhr = new XMLHttpRequest();
+          let elem = document.querySelectorAll('.elem');
+          let formData = {};
+
+          await elem.forEach((el) => {
+            if (el.name === 'name') {
+              formData.name = el.value;
+            }
+
+            if (el.name === 'location') {
+              formData.location = el.value;
+            }
+
+            if (el.name === 'history') {
+              formData.history = el.value;
+            }
+
+            if (el.name === 'active') {
+              formData.active = el.checked ? '1' : '0';
+            }
+          });
+
+          console.log(formData);
+
+          xhr.open('POST', 'http://localhost:3000/api/volcanos', true);
+          xhr.setRequestHeader('Content-type', 'application/json');
+
+          xhr.onload = function () {
+            if (this.status === 200) {
+              window.location.reload();
+            } else {
+              console.log('Error Creating');
+            }
+          };
+          xhr.send(JSON.stringify(formData));
+        });
+      })();
+
+      // delete volanos based on id
+      function deleteVol(id) {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('DELETE', `http://localhost:3000/api/volcanos/${id}`, true);
+        xhr.onload = function () {
+          if (this.status === 200) {
+            window.location.reload();
+          } else {
+            console.log('Error Deleting');
+          }
+        };
+        xhr.send();
+      }
+
+      (function () {
+        window.onload = function () {
+          const deleteBtn = document.querySelectorAll('.delete');
+
+          deleteBtn.forEach((del) => {
+            del.addEventListener('click', function () {
+              deleteVol(del.dataset.id);
+            });
+          });
+        };
+      })();
+    </script>
+  </body>
+</html>
