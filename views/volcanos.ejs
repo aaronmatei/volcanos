@@ -68,6 +68,15 @@
           </div>
         </form>
 
+        <div class="search">
+          <input
+            type="text"
+            class="search_input"
+            placeholder="Search for a Volcano"
+          />
+          <button type="button" class="search_btn">Clear Search</button>
+        </div>
+
         <div class="grid">
           <div class="volcanoes"></div>
         </div>
@@ -76,11 +85,10 @@
 
     <script>
       // fetch and get all volcanos
+      let obj = {};
+      let volDiv = document.querySelector('.volcanoes');
       (function () {
         const xhr = new XMLHttpRequest();
-        let volDiv = document.querySelector('.volcanoes');
-
-        let obj = {};
 
         xhr.open('GET', 'http://localhost:3000/api/volcanos', true);
 
@@ -204,6 +212,72 @@
           });
         };
       })();
+
+      // Search volcano
+      (function () {
+        const search_btn = document.querySelector('.search_btn');
+
+        // clear search field
+        search_btn.addEventListener('click', function (e) {
+          let search_input = document.querySelector('.search_input');
+          search_input.value = '';
+
+          volDiv.innerHTML = '';
+          for (key in obj.data) {
+            createVol(obj.data[key], volDiv);
+          }
+        });
+
+        // search
+        let search_input = document.querySelector('.search_input');
+        let newSearchArray = [];
+        search_input.addEventListener('input', function (e) {
+          newSearchArray = [];
+          for (key in obj.data) {
+            if (
+              obj.data[key].name.toLowerCase().indexOf(e.target.value) !== -1
+            ) {
+              newSearchArray.push(obj.data[key]);
+            }
+          }
+          volDiv.innerHTML = '';
+          if (newSearchArray.length !== 0) {
+            newSearchArray.map((vol) => {
+              volDiv.append(createVolSearch(vol));
+            });
+          } else {
+            volDiv.innerHTML =
+              'No results found. Please try a different search term.';
+          }
+        });
+      })();
+
+      function filterIt(arr, searchKey) {
+        return arr.filter((newObj) =>
+          Object.keys(newObj).some((key) => obj[key].includes(searchKey))
+        );
+      }
+
+      function createVolSearch(volcano) {
+        let volCon = document.createElement('div');
+        volCon.classList.add('volcano');
+        volCon.innerHTML = `
+                <a href="/volcano/${volcano.id}">
+                <p><strong>Name: </strong> ${volcano.name}</p>
+                <p><strong>Location: </strong> ${volcano.location}</p>
+                <p>
+                  <strong>History: </strong> ${volcano.history}
+                </p>
+                <p><strong>Active: </strong> ${
+                  volcano.active ? 'True' : 'False'
+                }</p>
+              </a>
+              <div class="delete" data-id="${volcano.id}">
+                  <i class="bi bi-trash"></i>
+                </div>
+                `;
+        return volCon;
+      }
     </script>
   </body>
 </html>

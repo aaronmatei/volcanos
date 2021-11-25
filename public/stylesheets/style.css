@@ -281,3 +281,40 @@ main {
 .form-group .submit:hover {
   background: rgb(230, 184, 0);
 }
+
+.search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.search_input {
+  outline: none;
+  /* height: 36px; */
+  padding: 1.125rem 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: normal;
+  min-width: 40%;
+  color: #f2f2f2;
+  background-color: #262626;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgb(0, 0, 0, 0.04);
+}
+
+.search_btn {
+  border: none;
+  background: #fc0;
+  color: #000;
+  padding: 1.125rem 0.75rem;
+  margin-left: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search_btn:hover {
+  background: rgb(236, 189, 0);
+}
